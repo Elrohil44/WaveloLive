@@ -12,11 +12,17 @@ import scala.io.StdIn
 
 object WebServer extends JsonSupport {
 
+  // Case objects defined to identify requests for actors
+
   case object GetBikes
   case object GetToUpdate
   case object Update
 
+  // bikes stores information about all bikes collected by server
+
   var bikes = new Bikes()
+
+  // Actor Updater is responsible for updating information about bikes
 
   class Updater extends Actor with ActorLogging {
     def receive = {
@@ -24,6 +30,8 @@ object WebServer extends JsonSupport {
       case _ => log.info("Invalid message")
     }
   }
+
+  // Actor Retriever is responsible for passing and retrieving information about bikes
 
   class Retriever extends
     Actor with ActorLogging {
@@ -33,35 +41,52 @@ object WebServer extends JsonSupport {
       case _ => log.info("Invalid message")
     }
   }
+
+
   def main(args: Array[String]) {
     implicit val system = ActorSystem()
     implicit val materializer = ActorMaterializer()
     // needed for the future flatMap/onComplete in the end
     implicit val executionContext = system.dispatcher
 
+    // Initialising actors
+
     val updater = system.actorOf(Props[Updater], "updater")
     val retriever = system.actorOf(Props[Retriever], "retriever")
+
+    // Schedule update interval to 30 seconds
+    // Scheduler sends Update request to actor updater every 30 seconds
+
     system.scheduler.schedule(0.seconds, 30.seconds, updater, Update)
+
+    // Defining timeout (following the example xD)
+
+    implicit val timeout: Timeout = 10.seconds
+    // Defining routes
+
+
 
     val route =
       path("bikes") {
           get {
-            implicit val timeout: Timeout = 10.seconds
+            val bikesJSON: Future[BikesJSON] = (retriever ? GetBikes).mapTo[BikesJSON]
 
-            // query the actor for the current auction state
-            val bikes: Future[BikesJSON] = (retriever ? GetBikes).mapTo[BikesJSON]
-            complete(bikes)
+            // After get request, complete returns JSON formatted bikes
+
+            complete(bikesJSON)
           }
       } ~
         path("toupdate") {
           get {
-            implicit val timeout: Timeout = 10.seconds
+            val bikesJSON: Future[BikesJSON] = (retriever ? GetToUpdate).mapTo[BikesJSON]
 
-            // query the actor for the current auction state
-            val bikes: Future[BikesJSON] = (retriever ? GetToUpdate).mapTo[BikesJSON]
-            complete(bikes)
+            // As said before
+
+            complete(bikesJSON)
           }
         }
+
+    // Setting server address and port
 
     val bindingFuture = Http().bindAndHandle(route, "localhost", 8089)
     println(s"Server online at http://localhost:8089/\nPress RETURN to stop...")

@@ -24,6 +24,10 @@ class Bikes extends JsonSupport {
     implicit val system = ActorSystem()
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
+
+    // I didn't find the request to get all the bikes
+    // I have found only how to get those which are available (means not rented at the moment)
+
     val response = Http().singleRequest(HttpRequest(uri = Bikes.url))
       .onComplete({
         case Success(res) =>
@@ -35,16 +39,30 @@ class Bikes extends JsonSupport {
                     val _list = json.parseJson.convertTo[BikeList].items
                     var coords: Array[Double] = null
                     var available: mutable.Set[Bike] = mutable.Set()
+
+                    // I don't know if it is very effective but it works
+                    // It adds bikes that were rented and haven't been collected by the server since
+                    // the server started
+
                     available ++= (for (item <- _list)  yield {
-                      coords = item.current_position.coords
-                      new Bike(item.id, coords(1), coords(0))
+                      new Bike(item)
                     }).toSet
+
+                    // Returned bikes are those which were rented and now are available
+
                     returned = rented intersect available
+
+                    // Rented are those which are not available
+
                     rented = bikes -- available
+
+                    // The coordinates of rented and returned should be updated
+
                     for (toupdate <- rented ++ returned)
-                      toupdate.synchronized {
-                        toupdate.updateCoords()
-                      }
+                      toupdate.updateCoords()
+
+                    // Bikes are all bikes that have been collected since the server started
+
                     bikes ++= available
                   case _ =>
                     println("Problem")

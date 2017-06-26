@@ -1,12 +1,13 @@
 package Bikes
 
-import akka.actor.ActorSystem
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.stream.ActorMaterializer
+import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
 import spray.json._
+import Bikes.Updating
 
 import scala.util.Success
 
@@ -42,7 +43,7 @@ trait BikeJsonProtocol extends DefaultJsonProtocol {
       case JsObject(x) =>
         (x("id"), x("latitude"), x("longitude")) match{
         case (JsNumber(id), JsNumber(latitude), JsNumber(longitude)) =>
-            new Bike(id.toInt, latitude.toDouble, longitude.toDouble)
+            new Bike(id.toInt, latitude.toDouble, longitude.toDouble, null, null)
         case _ => deserializationError("Bike expected")
     }
       case _ => deserializationError("Bike expected")
@@ -61,39 +62,53 @@ trait JsonSupport extends SprayJsonSupport with BikeJsonProtocol {
 }
 
 
-class Bike(val id: Int, var latitude: Double = 0.0,
-           var longitude: Double = 0.0) extends JsonSupport{
+class BikeUpdator(val biike: Bike, implicit val system: ActorSystem,
+                  implicit val materializer: ActorMaterializer) extends Actor with JsonSupport{
+  import akka.pattern.pipe
+  import context.dispatcher
 
-  def this(bike: BikeJSON){
-    this(bike.id, bike.current_position.coords(1), bike.current_position.coords(0))
+  val http = Http(system)
+
+  def update(): Unit = {
+    http.singleRequest(HttpRequest(uri = Bike.url + biike.id.toString)).pipeTo(self)
   }
 
+  def receive = {
+    case Updating => update()
+    case HttpResponse(StatusCodes.OK, _, entity, _) =>
+      val body = Unmarshal(entity).to[String]
+        .onComplete({
+          case Success(json) =>
+            val bike = json.parseJson.convertTo[BikeJSON]
+            biike.latitude = bike.current_position.coords(1)
+            biike.longitude = bike.current_position.coords(0)
+          case _ =>
+            println("Problem")
+        })
+    case resp @ HttpResponse(code, _, _, _) =>
+      println("Error")
+      resp.discardEntityBytes()
+  }
+
+}
+
+class Bike(val id: Int, var latitude: Double = 0.0,
+           var longitude: Double = 0.0,implicit val system: ActorSystem,
+           implicit val materializer: ActorMaterializer){
+
+  def this(bike: BikeJSON, system: ActorSystem, materializer: ActorMaterializer){
+    this(bike.id, bike.current_position.coords(1), bike.current_position.coords(0), system, materializer)
+  }
+
+  private var withActor: Boolean = false
+  private var updator: ActorRef = _
+
   def updateCoords(): Unit = {
-    implicit val system = ActorSystem()
-    implicit val materializer = ActorMaterializer()
-    implicit val executionContext = system.dispatcher
-
-    // Asynchronously sends request to get actual information about itself
-
-    val response = Http().singleRequest(HttpRequest(uri = Bike.url + id.toString))
-      .onComplete({
-        case Success(res) =>
-          res match {
-            case HttpResponse(StatusCodes.OK, _, entity, _) =>
-              val body = Unmarshal(entity).to[String]
-                .onComplete({
-                  case Success(json) =>
-                    val bike = json.parseJson.convertTo[BikeJSON]
-                    latitude = bike.current_position.coords(1)
-                    longitude = bike.current_position.coords(0)
-                  case _ =>
-                    println("Problem")
-                })
-            case _ => println("Problem!")
-          }
-        case _ => println("Problem")
-      })
-
+    if(!withActor){
+      updator = system.actorOf(Props(classOf[BikeUpdator], this, system, materializer), "Bike" + id.toString)
+      withActor = true
+    }
+    updator ! Updating
   }
 
   // This two methods aren't really necessary, I have created them at the beginning of the project

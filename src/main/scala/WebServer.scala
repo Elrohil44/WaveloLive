@@ -20,13 +20,15 @@ object WebServer extends JsonSupport {
 
   // bikes stores information about all bikes collected by server
 
-  var bikes = new Bikes()
+  private implicit val system = ActorSystem()
+  private implicit val materializer = ActorMaterializer()
 
+  val bikes = new Bikes()
   // Actor Updater is responsible for updating information about bikes
 
   class Updater extends Actor with ActorLogging {
     def receive = {
-      case Update => bikes.Update()
+      case Update => bikes.update()
       case _ => log.info("Invalid message")
     }
   }
@@ -39,25 +41,22 @@ object WebServer extends JsonSupport {
       case GetToUpdate => sender() ! BikesJSON((bikes.rented ++ bikes.returned).toArray)
       case GetBikes => sender() ! BikesJSON(bikes.bikes.toArray)
       case _ => log.info("Invalid message")
-    }
+      }
   }
 
 
   def main(args: Array[String]) {
-    implicit val system = ActorSystem()
-    implicit val materializer = ActorMaterializer()
     // needed for the future flatMap/onComplete in the end
     implicit val executionContext = system.dispatcher
 
     // Initialising actors
-
     val updater = system.actorOf(Props[Updater], "updater")
     val retriever = system.actorOf(Props[Retriever], "retriever")
 
     // Schedule update interval to 30 seconds
     // Scheduler sends Update request to actor updater every 30 seconds
 
-    system.scheduler.schedule(0.seconds, 30.seconds, updater, Update)
+    system.scheduler.schedule(0.seconds, 10.seconds, updater, Update)
 
     // Defining timeout (following the example xD)
 

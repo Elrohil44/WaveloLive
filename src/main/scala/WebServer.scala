@@ -1,11 +1,13 @@
 import Bikes.{Bikes, BikesJSON, JsonSupport}
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
+import akka.event.Logging
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
+import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
@@ -48,47 +50,49 @@ object WebServer extends JsonSupport with App{
 
  // def main(args: Array[String]) {
     // needed for the future flatMap/onComplete in the end
-    implicit val executionContext = system.dispatcher
+  implicit val executionContext = system.dispatcher
 
-    // Initialising actors
-    val updater = system.actorOf(Props[Updater], "updater")
-    val retriever = system.actorOf(Props[Retriever], "retriever")
+  // Initialising actors
+  val updater = system.actorOf(Props[Updater], "updater")
+  val retriever = system.actorOf(Props[Retriever], "retriever")
 
-    // Schedule update interval to 30 seconds
-    // Scheduler sends Update request to actor updater every 30 seconds
+  // Schedule update interval to 30 seconds
+  // Scheduler sends Update request to actor updater every 30 seconds
 
-    system.scheduler.schedule(0.seconds, 10.seconds, updater, Update)
+  system.scheduler.schedule(0.seconds, 10.seconds, updater, Update)
 
-    // Defining timeout (following the example xD)
+  // Defining timeout (following the example xD)
 
-    implicit val timeout: Timeout = 10.seconds
-    // Defining routes
+  implicit val timeout: Timeout = 10.seconds
+  // Defining routes
 
 
 
-    val route = respondWithHeader(RawHeader("Access-Control-Allow-Origin", "*")) {
-      path("bikes") {
+  val route = respondWithHeader(RawHeader("Access-Control-Allow-Origin", "*")) {
+    path("bikes") {
+      get {
+        val bikesJSON: Future[BikesJSON] = (retriever ? GetBikes).mapTo[BikesJSON]
+
+        // After get request, complete returns JSON formatted bikes
+        complete(bikesJSON)
+      }
+    } ~
+      path("toupdate") {
         get {
-          val bikesJSON: Future[BikesJSON] = (retriever ? GetBikes).mapTo[BikesJSON]
+          val bikesJSON: Future[BikesJSON] = (retriever ? GetToUpdate).mapTo[BikesJSON]
 
-          // After get request, complete returns JSON formatted bikes
+          // As said before
           complete(bikesJSON)
         }
-      } ~
-        path("toupdate") {
-          get {
-            val bikesJSON: Future[BikesJSON] = (retriever ? GetToUpdate).mapTo[BikesJSON]
+      }
+  }
 
-            // As said before
-            complete(bikesJSON)
-          }
-        }
-    }
-
+  val config = ConfigFactory.load()
+  val logger = Logging(system, getClass)
 
     // Setting server address and port
 
-    val bindingFuture = Http().bindAndHandle(route, "0.0.0.0", 9000)
+  val bindingFuture = Http().bindAndHandle(route, config.getString("http.interface"), config.getInt("http.port"))
 //    println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
 //    StdIn.readLine() // let it run until user presses return
 //    bindingFuture

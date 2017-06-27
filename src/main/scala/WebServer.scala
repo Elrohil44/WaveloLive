@@ -2,6 +2,7 @@ import Bikes.{Bikes, BikesJSON, JsonSupport}
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.event.Logging
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
@@ -19,11 +20,15 @@ object WebServer extends JsonSupport with App{
   case object GetBikes
   case object GetToUpdate
   case object Update
+  case object Ping
 
   // bikes stores information about all bikes collected by server
 
   private implicit val system = ActorSystem()
   private implicit val materializer = ActorMaterializer()
+
+  val config = ConfigFactory.load()
+  val logger = Logging(system, getClass)
 
   val bikes = new Bikes()
   // Actor Updater is responsible for updating information about bikes
@@ -39,9 +44,17 @@ object WebServer extends JsonSupport with App{
 
   class Retriever extends
     Actor with ActorLogging {
+    import akka.pattern.pipe
+    import context.dispatcher
+    val http = Http(system)
+    val ping = HttpRequest(uri = "http://" + config.getString("http.interface") +":"+ config.getString("http.port") + "/ping")
+
     def receive = {
+      case Ping => http.singleRequest(ping).pipeTo(self)
       case GetToUpdate => sender() ! BikesJSON((bikes.rented ++ bikes.returned).toArray)
       case GetBikes => sender() ! BikesJSON(bikes.bikes.toArray)
+      case resp @ HttpResponse(_, _, _, _) =>
+        resp.discardEntityBytes()
       case _ => log.info("Invalid message")
       }
   }
@@ -59,6 +72,7 @@ object WebServer extends JsonSupport with App{
   // Scheduler sends Update request to actor updater every 30 seconds
 
   system.scheduler.schedule(0.seconds, 10.seconds, updater, Update)
+  system.scheduler.schedule(5.minutes, 10.minutes, retriever, Ping)
 
   // Defining timeout (following the example xD)
 
@@ -83,11 +97,16 @@ object WebServer extends JsonSupport with App{
           // As said before
           complete(bikesJSON)
         }
+      }~
+      path("ping") {
+        get {
+
+          // As said before
+          complete("PONG!")
+        }
       }
   }
 
-  val config = ConfigFactory.load()
-  val logger = Logging(system, getClass)
 
     // Setting server address and port
 

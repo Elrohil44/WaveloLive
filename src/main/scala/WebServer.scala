@@ -1,6 +1,7 @@
 import Bikes.{Bikes, BikesJSON, JsonSupport}
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.stream.ActorMaterializer
@@ -65,29 +66,29 @@ object WebServer extends JsonSupport {
 
 
 
-    val route =
+    val route = respondWithHeader(RawHeader("Access-Control-Allow-Origin", "*")) {
       path("bikes") {
-          get {
-            val bikesJSON: Future[BikesJSON] = (retriever ? GetBikes).mapTo[BikesJSON]
+        get {
+          val bikesJSON: Future[BikesJSON] = (retriever ? GetBikes).mapTo[BikesJSON]
 
-            // After get request, complete returns JSON formatted bikes
-
-            complete(bikesJSON)
-          }
+          // After get request, complete returns JSON formatted bikes
+          complete(bikesJSON)
+        }
       } ~
         path("toupdate") {
           get {
             val bikesJSON: Future[BikesJSON] = (retriever ? GetToUpdate).mapTo[BikesJSON]
 
             // As said before
-
             complete(bikesJSON)
           }
         }
+    }
+
 
     // Setting server address and port
 
-    val bindingFuture = Http().bindAndHandle(route, "localhost", 8089)
+    val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
     println(s"Server online at http://localhost:8089/\nPress RETURN to stop...")
     StdIn.readLine() // let it run until user presses return
     bindingFuture

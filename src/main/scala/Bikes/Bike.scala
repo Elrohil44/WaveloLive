@@ -103,6 +103,7 @@ class Bike(val id: Int, var latitude: Double = 0.0,
   private var withActor: Boolean = false
   private var updator: ActorRef = _
 
+
   def updateCoords(): Unit = {
     if(!withActor){
       updator = system.actorOf(Props(classOf[BikeUpdator], this, system, materializer), "Bike" + id.toString)

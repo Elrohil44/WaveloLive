@@ -1,5 +1,6 @@
 [debug] Other repositories:
 [debug] Default repositories:
+[debug] no default cache defined: set to C:\Users\Wiesiek\.ivy2\cache
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: server#server$sbt_2.10;1.0
 [debug] 	confs: [default]
@@ -706,7 +707,6 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.10.6 {compile=[default(compile)]} => dependency: org.scala-lang#scala-library;2.10.6 {compile=[default(compile)]}
 [info] Resolving org.scala-sbt#cross;0.13.15 ...
 [debug] sbt-chain: Checking cache for: dependency: org.scala-sbt#cross;0.13.15 {compile=[default(compile)]}
-[debug] no default cache defined: set to C:\Users\Wiesiek\.ivy2\cache
 [debug] sbt-chain: module revision found in cache: org.scala-sbt#cross;0.13.15
 [debug] 	found org.scala-sbt#cross;0.13.15 in sbt-chain
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.10.6 {compile=[default(compile)]} => dependency: org.scala-lang#scala-library;2.10.6 {compile=[default(compile)]}
@@ -1998,8 +1998,8 @@
 [debug] downloading https://repo1.maven.org/maven2/org/jboss/interceptor/jboss-interceptor-api/1.1/jboss-interceptor-api-1.1.pom ...
 [debug] 	public: downloading https://repo1.maven.org/maven2/org/jboss/interceptor/jboss-interceptor-api/1.1/jboss-interceptor-api-1.1.pom
 [debug] 	public: downloading https://repo1.maven.org/maven2/org/jboss/interceptor/jboss-interceptor-api/1.1/jboss-interceptor-api-1.1.pom.sha1
-[debug] 	[FAILED     ] org.jboss.interceptor#jboss-interceptor-api;1.1!jboss-interceptor-api.pom(pom.original): invalid sha1: expected=453b712ff6cda3a3f10f46a9ab9b9a42fc9bc021 computed=56da14e5a3e7e5656fe2ed1942d9fc0c1f3b054b (207ms)
-[warn] problem while downloading module descriptor: https://repo1.maven.org/maven2/org/jboss/interceptor/jboss-interceptor-api/1.1/jboss-interceptor-api-1.1.pom: invalid sha1: expected=453b712ff6cda3a3f10f46a9ab9b9a42fc9bc021 computed=56da14e5a3e7e5656fe2ed1942d9fc0c1f3b054b (207ms)
+[debug] 	[FAILED     ] org.jboss.interceptor#jboss-interceptor-api;1.1!jboss-interceptor-api.pom(pom.original): invalid sha1: expected=453b712ff6cda3a3f10f46a9ab9b9a42fc9bc021 computed=56da14e5a3e7e5656fe2ed1942d9fc0c1f3b054b (210ms)
+[warn] problem while downloading module descriptor: https://repo1.maven.org/maven2/org/jboss/interceptor/jboss-interceptor-api/1.1/jboss-interceptor-api-1.1.pom: invalid sha1: expected=453b712ff6cda3a3f10f46a9ab9b9a42fc9bc021 computed=56da14e5a3e7e5656fe2ed1942d9fc0c1f3b054b (210ms)
 [warn] 	module not found: org.jboss.interceptor#jboss-interceptor-api;1.1
 [warn] ==== typesafe-ivy-releases: tried
 [warn]   https://repo.typesafe.com/typesafe/ivy-releases/org.jboss.interceptor/jboss-interceptor-api/1.1/ivys/ivy.xml
@@ -2096,61 +2096,8 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]} => dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]}
 [info] Resolving org.sonatype.sisu#sisu-guava;0.9.9 ...
 [debug] sbt-chain: Checking cache for: dependency: org.sonatype.sisu#sisu-guava;0.9.9 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[info] Resolving org.sonatype.sisu#sisu-guava;0.9.9 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: org.sonatype.sisu#sisu-guava;0.9.9 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu/sisu-guava/0.9.9/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu/sisu-guava/0.9.9/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for org.sonatype.sisu#sisu-guava;0.9.9
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu/sisu-guava/0.9.9/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu/sisu-guava/0.9.9/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for org.sonatype.sisu#sisu-guava;0.9.9
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\org.sonatype.sisu\sisu-guava\0.9.9\ivys\ivy.xml
-[debug] 	local: no ivy file found for org.sonatype.sisu#sisu-guava;0.9.9
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.pom
-[debug] 	public: found md file for org.sonatype.sisu#sisu-guava;0.9.9
-[debug] 		=> https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.pom (0.9.9)
-[debug] downloading https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.pom
-[debug] 	[SUCCESSFUL ] org.sonatype.sisu#sisu-guava;0.9.9!sisu-guava.pom(pom.original) (201ms)
-[info] Resolving org.sonatype.sisu.inject#guava-parent;0.9.9 ...
-[debug] sbt-chain: Checking cache for: dependency: org.sonatype.sisu.inject#guava-parent;0.9.9 {}
-[info] Resolving org.sonatype.sisu.inject#guava-parent;0.9.9 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: org.sonatype.sisu.inject#guava-parent;0.9.9 {}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu.inject/guava-parent/0.9.9/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu.inject/guava-parent/0.9.9/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for org.sonatype.sisu.inject#guava-parent;0.9.9
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu.inject/guava-parent/0.9.9/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu.inject/guava-parent/0.9.9/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for org.sonatype.sisu.inject#guava-parent;0.9.9
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\org.sonatype.sisu.inject\guava-parent\0.9.9\ivys\ivy.xml
-[debug] 	local: no ivy file found for org.sonatype.sisu.inject#guava-parent;0.9.9
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/sisu/inject/guava-parent/0.9.9/guava-parent-0.9.9.pom
-[debug] 	public: found md file for org.sonatype.sisu.inject#guava-parent;0.9.9
-[debug] 		=> https://repo1.maven.org/maven2/org/sonatype/sisu/inject/guava-parent/0.9.9/guava-parent-0.9.9.pom (0.9.9)
-[debug] downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/guava-parent/0.9.9/guava-parent-0.9.9.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/guava-parent/0.9.9/guava-parent-0.9.9.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/guava-parent/0.9.9/guava-parent-0.9.9.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/org/sonatype/sisu/inject/guava-parent/0.9.9/guava-parent-0.9.9.pom
-[debug] 	[SUCCESSFUL ] org.sonatype.sisu.inject#guava-parent;0.9.9!guava-parent.pom(pom.original) (231ms)
-[info] Resolving org.sonatype.forge#forge-parent;10 ...
-[debug] sbt-chain: Checking cache for: dependency: org.sonatype.forge#forge-parent;10 {}
-[debug] sbt-chain: module revision found in cache: org.sonatype.forge#forge-parent;10
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu.inject/guava-parent/0.9.9/jars/guava-parent.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu.inject/guava-parent/0.9.9/jars/guava-parent.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu.inject/guava-parent/0.9.9/jars/guava-parent.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu.inject/guava-parent/0.9.9/jars/guava-parent.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\org.sonatype.sisu.inject\guava-parent\0.9.9\jars\guava-parent.jar
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/sisu/inject/guava-parent/0.9.9/guava-parent-0.9.9.jar
-[debug] CLIENT ERROR: Not Found url=https://repo1.maven.org/maven2/org/sonatype/sisu/inject/guava-parent/0.9.9/guava-parent-0.9.9.jar
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu/sisu-guava/0.9.9/jars/sisu-guava.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu/sisu-guava/0.9.9/jars/sisu-guava.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu/sisu-guava/0.9.9/jars/sisu-guava.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu/sisu-guava/0.9.9/jars/sisu-guava.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\org.sonatype.sisu\sisu-guava\0.9.9\jars\sisu-guava.jar
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.jar
-[debug] 	found org.sonatype.sisu#sisu-guava;0.9.9 in public
+[debug] sbt-chain: module revision found in cache: org.sonatype.sisu#sisu-guava;0.9.9
+[debug] 	found org.sonatype.sisu#sisu-guava;0.9.9 in sbt-chain
 [debug] == resolving dependencies org.sonatype.sisu#sisu-guice;3.1.0->org.sonatype.sisu#sisu-guava;0.9.9 [compile->compile(*)]
 [debug] == resolving dependencies org.eclipse.sisu#org.eclipse.sisu.plexus;0.0.0.M5->org.sonatype.sisu#sisu-guice;3.1.0 [compile->default(compile)]
 [debug] == resolving dependencies org.eclipse.sisu#org.eclipse.sisu.plexus;0.0.0.M5->org.sonatype.sisu#sisu-guice;3.1.0 [compile->runtime]
@@ -2175,85 +2122,8 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]} => dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]}
 [info] Resolving com.google.inject#guice;3.0 ...
 [debug] sbt-chain: Checking cache for: dependency: com.google.inject#guice;3.0 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[info] Resolving com.google.inject#guice;3.0 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: com.google.inject#guice;3.0 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/com.google.inject/guice/3.0/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/com.google.inject/guice/3.0/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for com.google.inject#guice;3.0
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google.inject/guice/3.0/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google.inject/guice/3.0/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for com.google.inject#guice;3.0
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\com.google.inject\guice\3.0\ivys\ivy.xml
-[debug] 	local: no ivy file found for com.google.inject#guice;3.0
-[debug] 		tried https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.pom
-[debug] 	public: found md file for com.google.inject#guice;3.0
-[debug] 		=> https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.pom (3.0)
-[debug] downloading https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.pom
-[debug] 	[SUCCESSFUL ] com.google.inject#guice;3.0!guice.pom(pom.original) (214ms)
-[info] Resolving com.google.inject#guice-parent;3.0 ...
-[debug] sbt-chain: Checking cache for: dependency: com.google.inject#guice-parent;3.0 {}
-[info] Resolving com.google.inject#guice-parent;3.0 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: com.google.inject#guice-parent;3.0 {}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/com.google.inject/guice-parent/3.0/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/com.google.inject/guice-parent/3.0/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for com.google.inject#guice-parent;3.0
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google.inject/guice-parent/3.0/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google.inject/guice-parent/3.0/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for com.google.inject#guice-parent;3.0
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\com.google.inject\guice-parent\3.0\ivys\ivy.xml
-[debug] 	local: no ivy file found for com.google.inject#guice-parent;3.0
-[debug] 		tried https://repo1.maven.org/maven2/com/google/inject/guice-parent/3.0/guice-parent-3.0.pom
-[debug] 	public: found md file for com.google.inject#guice-parent;3.0
-[debug] 		=> https://repo1.maven.org/maven2/com/google/inject/guice-parent/3.0/guice-parent-3.0.pom (3.0)
-[debug] downloading https://repo1.maven.org/maven2/com/google/inject/guice-parent/3.0/guice-parent-3.0.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/com/google/inject/guice-parent/3.0/guice-parent-3.0.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/com/google/inject/guice-parent/3.0/guice-parent-3.0.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/com/google/inject/guice-parent/3.0/guice-parent-3.0.pom
-[debug] 	[SUCCESSFUL ] com.google.inject#guice-parent;3.0!guice-parent.pom(pom.original) (260ms)
-[info] Resolving com.google#google;5 ...
-[debug] sbt-chain: Checking cache for: dependency: com.google#google;5 {}
-[info] Resolving com.google#google;5 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: com.google#google;5 {}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/com.google/google/5/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/com.google/google/5/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for com.google#google;5
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google/google/5/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google/google/5/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for com.google#google;5
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\com.google\google\5\ivys\ivy.xml
-[debug] 	local: no ivy file found for com.google#google;5
-[debug] 		tried https://repo1.maven.org/maven2/com/google/google/5/google-5.pom
-[debug] 	public: found md file for com.google#google;5
-[debug] 		=> https://repo1.maven.org/maven2/com/google/google/5/google-5.pom (5)
-[debug] downloading https://repo1.maven.org/maven2/com/google/google/5/google-5.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/com/google/google/5/google-5.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/com/google/google/5/google-5.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/com/google/google/5/google-5.pom
-[debug] 	[SUCCESSFUL ] com.google#google;5!google.pom(pom.original) (224ms)
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/com.google/google/5/jars/google.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/com.google/google/5/jars/google.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google/google/5/jars/google.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google/google/5/jars/google.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\com.google\google\5\jars\google.jar
-[debug] 		tried https://repo1.maven.org/maven2/com/google/google/5/google-5.jar
-[debug] CLIENT ERROR: Not Found url=https://repo1.maven.org/maven2/com/google/google/5/google-5.jar
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/com.google.inject/guice-parent/3.0/jars/guice-parent.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/com.google.inject/guice-parent/3.0/jars/guice-parent.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google.inject/guice-parent/3.0/jars/guice-parent.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google.inject/guice-parent/3.0/jars/guice-parent.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\com.google.inject\guice-parent\3.0\jars\guice-parent.jar
-[debug] 		tried https://repo1.maven.org/maven2/com/google/inject/guice-parent/3.0/guice-parent-3.0.jar
-[debug] CLIENT ERROR: Not Found url=https://repo1.maven.org/maven2/com/google/inject/guice-parent/3.0/guice-parent-3.0.jar
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/com.google.inject/guice/3.0/jars/guice.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/com.google.inject/guice/3.0/jars/guice.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google.inject/guice/3.0/jars/guice.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.google.inject/guice/3.0/jars/guice.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\com.google.inject\guice\3.0\jars\guice.jar
-[debug] 		tried https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.jar
-[debug] 	found com.google.inject#guice;3.0 in public
+[debug] sbt-chain: module revision found in cache: com.google.inject#guice;3.0
+[debug] 	found com.google.inject#guice;3.0 in sbt-chain
 [debug] == resolving dependencies org.eclipse.sisu#org.eclipse.sisu.inject;0.0.0.M5->com.google.inject#guice;3.0 [compile->compile(*)]
 [debug] == resolving dependencies com.google.inject#guice;3.0->javax.inject#javax.inject;1 [compile->master(compile)]
 [debug] == resolving dependencies com.google.inject#guice;3.0->javax.inject#javax.inject;1 [compile->compile(*)]
@@ -2264,116 +2134,16 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]} => dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]}
 [info] Resolving org.sonatype.sisu.inject#cglib;2.2.1-v20090111 ...
 [debug] sbt-chain: Checking cache for: dependency: org.sonatype.sisu.inject#cglib;2.2.1-v20090111 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[info] Resolving org.sonatype.sisu.inject#cglib;2.2.1-v20090111 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: org.sonatype.sisu.inject#cglib;2.2.1-v20090111 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for org.sonatype.sisu.inject#cglib;2.2.1-v20090111
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for org.sonatype.sisu.inject#cglib;2.2.1-v20090111
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\org.sonatype.sisu.inject\cglib\2.2.1-v20090111\ivys\ivy.xml
-[debug] 	local: no ivy file found for org.sonatype.sisu.inject#cglib;2.2.1-v20090111
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.pom
-[debug] 	public: found md file for org.sonatype.sisu.inject#cglib;2.2.1-v20090111
-[debug] 		=> https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.pom (2.2.1-v20090111)
-[debug] downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.pom
-[debug] 	[SUCCESSFUL ] org.sonatype.sisu.inject#cglib;2.2.1-v20090111!cglib.pom(pom.original) (217ms)
-[info] Resolving org.sonatype.forge#forge-parent;6 ...
-[debug] sbt-chain: Checking cache for: dependency: org.sonatype.forge#forge-parent;6 {}
-[info] Resolving org.sonatype.forge#forge-parent;6 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: org.sonatype.forge#forge-parent;6 {}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.forge/forge-parent/6/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.forge/forge-parent/6/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for org.sonatype.forge#forge-parent;6
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.forge/forge-parent/6/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.forge/forge-parent/6/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for org.sonatype.forge#forge-parent;6
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\org.sonatype.forge\forge-parent\6\ivys\ivy.xml
-[debug] 	local: no ivy file found for org.sonatype.forge#forge-parent;6
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/forge/forge-parent/6/forge-parent-6.pom
-[debug] 	public: found md file for org.sonatype.forge#forge-parent;6
-[debug] 		=> https://repo1.maven.org/maven2/org/sonatype/forge/forge-parent/6/forge-parent-6.pom (6)
-[debug] downloading https://repo1.maven.org/maven2/org/sonatype/forge/forge-parent/6/forge-parent-6.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/forge/forge-parent/6/forge-parent-6.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/forge/forge-parent/6/forge-parent-6.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/org/sonatype/forge/forge-parent/6/forge-parent-6.pom
-[debug] 	[SUCCESSFUL ] org.sonatype.forge#forge-parent;6!forge-parent.pom(pom.original) (218ms)
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.forge/forge-parent/6/jars/forge-parent.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.forge/forge-parent/6/jars/forge-parent.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.forge/forge-parent/6/jars/forge-parent.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.forge/forge-parent/6/jars/forge-parent.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\org.sonatype.forge\forge-parent\6\jars\forge-parent.jar
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/forge/forge-parent/6/forge-parent-6.jar
-[debug] CLIENT ERROR: Not Found url=https://repo1.maven.org/maven2/org/sonatype/forge/forge-parent/6/forge-parent-6.jar
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/jars/cglib.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/jars/cglib.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/jars/cglib.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/jars/cglib.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\org.sonatype.sisu.inject\cglib\2.2.1-v20090111\jars\cglib.jar
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.jar
-[debug] 	found org.sonatype.sisu.inject#cglib;2.2.1-v20090111 in public
+[debug] sbt-chain: module revision found in cache: org.sonatype.sisu.inject#cglib;2.2.1-v20090111
+[debug] 	found org.sonatype.sisu.inject#cglib;2.2.1-v20090111 in sbt-chain
 [debug] == resolving dependencies com.google.inject#guice;3.0->org.sonatype.sisu.inject#cglib;2.2.1-v20090111 [compile->compile(*)]
 [debug] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [compile->master(compile)]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]} => dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]}
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]} => dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]}
 [info] Resolving asm#asm;3.1 ...
 [debug] sbt-chain: Checking cache for: dependency: asm#asm;3.1 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[info] Resolving asm#asm;3.1 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: asm#asm;3.1 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/asm/asm/3.1/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/asm/asm/3.1/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for asm#asm;3.1
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/asm/asm/3.1/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/asm/asm/3.1/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for asm#asm;3.1
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\asm\asm\3.1\ivys\ivy.xml
-[debug] 	local: no ivy file found for asm#asm;3.1
-[debug] 		tried https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.pom
-[debug] 	public: found md file for asm#asm;3.1
-[debug] 		=> https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.pom (3.1)
-[debug] downloading https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.pom
-[debug] 	[SUCCESSFUL ] asm#asm;3.1!asm.pom(pom.original) (241ms)
-[info] Resolving asm#asm-parent;3.1 ...
-[debug] sbt-chain: Checking cache for: dependency: asm#asm-parent;3.1 {}
-[info] Resolving asm#asm-parent;3.1 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: asm#asm-parent;3.1 {}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/asm/asm-parent/3.1/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/asm/asm-parent/3.1/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for asm#asm-parent;3.1
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/asm/asm-parent/3.1/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/asm/asm-parent/3.1/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for asm#asm-parent;3.1
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\asm\asm-parent\3.1\ivys\ivy.xml
-[debug] 	local: no ivy file found for asm#asm-parent;3.1
-[debug] 		tried https://repo1.maven.org/maven2/asm/asm-parent/3.1/asm-parent-3.1.pom
-[debug] 	public: found md file for asm#asm-parent;3.1
-[debug] 		=> https://repo1.maven.org/maven2/asm/asm-parent/3.1/asm-parent-3.1.pom (3.1)
-[debug] downloading https://repo1.maven.org/maven2/asm/asm-parent/3.1/asm-parent-3.1.pom ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/asm/asm-parent/3.1/asm-parent-3.1.pom
-[debug] 	public: downloading https://repo1.maven.org/maven2/asm/asm-parent/3.1/asm-parent-3.1.pom.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/asm/asm-parent/3.1/asm-parent-3.1.pom
-[debug] 	[SUCCESSFUL ] asm#asm-parent;3.1!asm-parent.pom(pom.original) (209ms)
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/asm/asm-parent/3.1/jars/asm-parent.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/asm/asm-parent/3.1/jars/asm-parent.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/asm/asm-parent/3.1/jars/asm-parent.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/asm/asm-parent/3.1/jars/asm-parent.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\asm\asm-parent\3.1\jars\asm-parent.jar
-[debug] 		tried https://repo1.maven.org/maven2/asm/asm-parent/3.1/asm-parent-3.1.jar
-[debug] CLIENT ERROR: Not Found url=https://repo1.maven.org/maven2/asm/asm-parent/3.1/asm-parent-3.1.jar
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/asm/asm/3.1/jars/asm.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/asm/asm/3.1/jars/asm.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/asm/asm/3.1/jars/asm.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/asm/asm/3.1/jars/asm.jar
-[debug] 		tried C:\Users\Wiesiek\.ivy2\local\asm\asm\3.1\jars\asm.jar
-[debug] 		tried https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.jar
-[debug] 	found asm#asm;3.1 in public
+[debug] sbt-chain: module revision found in cache: asm#asm;3.1
+[debug] 	found asm#asm;3.1 in sbt-chain
 [debug] == resolving dependencies org.sonatype.sisu.inject#cglib;2.2.1-v20090111->asm#asm;3.1 [compile->compile(*)]
 [debug] == resolving dependencies org.eclipse.sisu#org.eclipse.sisu.plexus;0.0.0.M5->org.eclipse.sisu#org.eclipse.sisu.inject;0.0.0.M5 [compile->default(compile)]
 [debug] == resolving dependencies org.eclipse.sisu#org.eclipse.sisu.plexus;0.0.0.M5->org.eclipse.sisu#org.eclipse.sisu.inject;0.0.0.M5 [compile->runtime]
@@ -2939,38 +2709,18 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.15!apply-macro.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#template-resolver;0.1!template-resolver.jar
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.jar
-[info] downloading https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.jar ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.jar
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.jar.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/org/sonatype/sisu/sisu-guava/0.9.9/sisu-guava-0.9.9.jar
-[info] 	[SUCCESSFUL ] org.sonatype.sisu#sisu-guava;0.9.9!sisu-guava.jar (641ms)
-[debug] 		tried https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.jar
-[info] downloading https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.jar ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.jar
-[debug] 	public: downloading https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.jar.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/com/google/inject/guice/3.0/guice-3.0.jar
-[info] 	[SUCCESSFUL ] com.google.inject#guice;3.0!guice.jar (340ms)
-[debug] 		tried https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.jar
-[info] downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.jar ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.jar
-[debug] 	public: downloading https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.jar.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/org/sonatype/sisu/inject/cglib/2.2.1-v20090111/cglib-2.2.1-v20090111.jar
-[info] 	[SUCCESSFUL ] org.sonatype.sisu.inject#cglib;2.2.1-v20090111!cglib.jar (259ms)
-[debug] 		tried https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.jar
-[info] downloading https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.jar ...
-[debug] 	public: downloading https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.jar
-[debug] 	public: downloading https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.jar.sha1
-[debug] sha1 OK for https://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.jar
-[info] 	[SUCCESSFUL ] asm#asm;3.1!asm.jar (210ms)
-[debug] :: resolution report :: resolve 24076ms :: artifacts dl 1517ms
+[debug] 	[NOT REQUIRED] org.sonatype.sisu#sisu-guava;0.9.9!sisu-guava.jar
+[debug] 	[NOT REQUIRED] com.google.inject#guice;3.0!guice.jar
+[debug] 	[NOT REQUIRED] org.sonatype.sisu.inject#cglib;2.2.1-v20090111!cglib.jar
+[debug] 	[NOT REQUIRED] asm#asm;3.1!asm.jar
+[debug] :: resolution report :: resolve 5039ms :: artifacts dl 66ms
 [warn] 	::::::::::::::::::::::::::::::::::::::::::::::
 [warn] 	::          UNRESOLVED DEPENDENCIES         ::
 [warn] 	::::::::::::::::::::::::::::::::::::::::::::::
 [warn] 	:: org.jboss.interceptor#jboss-interceptor-api;1.1: not found
 [warn] 	::::::::::::::::::::::::::::::::::::::::::::::
 [debug] 	report for server#server$sbt_2.10;1.0 default produced in C:\Users\Wiesiek\Desktop\WaveloLive\target\resolution-cache\reports\server-server$sbt_2.10-default.xml
-[debug] 	resolve done (24076ms resolve - 1517ms download)
+[debug] 	resolve done (5039ms resolve - 66ms download)
 sbt.ResolveException: unresolved dependency: org.jboss.interceptor#jboss-interceptor-api;1.1: not found
 	at sbt.IvyActions$.sbt$IvyActions$$resolve(IvyActions.scala:313)
 	at sbt.IvyActions$$anonfun$updateEither$1.apply(IvyActions.scala:191)

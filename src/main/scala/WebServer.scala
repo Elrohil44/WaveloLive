@@ -11,7 +11,6 @@ import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
-import scala.io.StdIn
 
 object WebServer extends JsonSupport with App{
 

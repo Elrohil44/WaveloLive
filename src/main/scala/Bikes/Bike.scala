@@ -5,11 +5,12 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
+import akka.stream.{ActorMaterializer, ActorMaterializerSettings, BufferOverflowException}
 import spray.json._
 import Bikes.Updating
 
 import scala.util.Success
+import scala.concurrent.duration._
 
 /**
   * Created by Wiesiek on 2017-05-20.
@@ -82,12 +83,14 @@ class BikeUpdator(val biike: Bike, implicit val system: ActorSystem,
             val bike = json.parseJson.convertTo[BikeJSON]
             biike.latitude = bike.current_position.coords(1)
             biike.longitude = bike.current_position.coords(0)
+            biike.updated = true
           case _ =>
             println("Problem")
         })
     case resp @ HttpResponse(code, _, _, _) =>
       println("Error")
       resp.discardEntityBytes()
+    case _ => system.scheduler.scheduleOnce(1.seconds, self, Updating)
   }
 
 }
@@ -99,7 +102,7 @@ class Bike(val id: Int, var latitude: Double = 0.0,
   def this(bike: BikeJSON, system: ActorSystem, materializer: ActorMaterializer){
     this(bike.id, bike.current_position.coords(1), bike.current_position.coords(0), system, materializer)
   }
-
+  var updated: Boolean = false
   private var withActor: Boolean = false
   private var updator: ActorRef = _
 

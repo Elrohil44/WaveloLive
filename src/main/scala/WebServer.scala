@@ -11,7 +11,7 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.io.StdIn
 
-object WebServer extends JsonSupport {
+object WebServer extends JsonSupport with App{
 
   // Case objects defined to identify requests for actors
 
@@ -46,7 +46,7 @@ object WebServer extends JsonSupport {
   }
 
 
-  def main(args: Array[String]) {
+ // def main(args: Array[String]) {
     // needed for the future flatMap/onComplete in the end
     implicit val executionContext = system.dispatcher
 
@@ -88,12 +88,12 @@ object WebServer extends JsonSupport {
 
     // Setting server address and port
 
-    val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
-    println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
-    StdIn.readLine() // let it run until user presses return
-    bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ => system.terminate()) // and shutdown when done
+    val bindingFuture = Http().bindAndHandle(route, "0.0.0.0", 9000)
+//    println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
+//    StdIn.readLine() // let it run until user presses return
+//    bindingFuture
+//      .flatMap(_.unbind()) // trigger unbinding from the port
+//      .onComplete(_ => system.terminate()) // and shutdown when done
 
-  }
+ // }
 }

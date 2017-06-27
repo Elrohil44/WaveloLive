@@ -20,6 +20,7 @@ project/plugins/project/
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
+.idea
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
@@ -60,3 +61,13 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+.idea/.name
+.idea/misc.xml
+.idea/modules.xml
+.idea/modules/
+.idea/sbt.xml
+.idea/scala_compiler.xml
+project/project/
+src/main/java/
+src/main/scala-2.12/
+src/test/

@@ -38,7 +38,7 @@ object BikeDatabase {
   def insertBike(bike: Bikes.Bike) = {
     val query = db.run(dbbikes += bike.id)
     try {
-      Await.result(query, 500.microseconds)
+      Await.result(query, 5.seconds)
     } catch {
       case _:Exception => println("Timeout")
     }

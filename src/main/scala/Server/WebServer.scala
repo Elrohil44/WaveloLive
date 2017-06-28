@@ -1,6 +1,7 @@
 package Server
 
 import Bikes.{Bikes, BikesJSON, JsonSupport}
+import Database.BikeDatabase
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.event.Logging
 import akka.http.scaladsl.Http
@@ -32,9 +33,9 @@ object WebServer extends JsonSupport with App{
 
   val config = ConfigFactory.load()
   val logger = Logging(system, getClass)
-//  private val db = BikeDatabase
+  private val db = BikeDatabase
 
-  private val bikes = new Bikes(system, materializer)//, db.getBikes)
+  private val bikes = new Bikes(system, materializer, db.getBikes)
   // Actor Updater is responsible for updating information about bikes
 
   class Updater extends Actor with ActorLogging {

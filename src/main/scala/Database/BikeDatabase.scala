@@ -1,10 +1,11 @@
 package Database
 
-import slick.jdbc.meta.MTable
+import com.typesafe.config.ConfigFactory
 import slick.jdbc.PostgresProfile.api._
+import slick.jdbc.meta.MTable
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 /**
@@ -17,6 +18,7 @@ object BikeDatabase {
   }
 
   val dbbikes = TableQuery[Bike]
+  val config = ConfigFactory.load()
   val db = Database.forConfig("databaseUrl")
 
   db.run(MTable.getTables("BIKES")).onComplete({
@@ -24,7 +26,7 @@ object BikeDatabase {
       if(res.toList.isEmpty){
         db.run(dbbikes.schema.create)
       }
-    case Failure(_) => ()
+    case Failure(_) => println("Failure")
   })
 
   def getBikes: Future[Seq[Int]] = {

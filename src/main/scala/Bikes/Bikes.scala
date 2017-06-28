@@ -45,13 +45,14 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             // the server started
             val available = (for (item <- _list) yield new Bike(item, system, materializer)).toSet
             // Returned bikes are those which were rented and now are available
+            val toStore: Set[Bike] = available -- bikes.bikes
             if(!allUpdated){
               bikes.bikes = (bikes.bikes -- available) ++ available
               bikes.returned = Set()
               allUpdated = true
             }
-            else
-              bikes.returned = bikes.rented & available
+
+            bikes.returned = bikes.rented & available
 
             // Rented are those which are not available
 
@@ -59,7 +60,6 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             // The coordinates of rented and returned should be updated
 
             val toUpdate: Set[Bike] = bikes.rented ++ bikes.returned
-            val toStore: Set[Bike] = available -- bikes.bikes
 
             toUpdate.map((b:Bike) => {b.updateCoords(); b})
             toStore.map((b: Bike) => db.insertBike(b))

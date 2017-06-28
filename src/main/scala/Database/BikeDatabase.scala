@@ -5,7 +5,8 @@ import slick.jdbc.PostgresProfile.api._
 import slick.jdbc.meta.MTable
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
 /**
@@ -36,6 +37,11 @@ object BikeDatabase {
 
   def insertBike(bike: Bikes.Bike) = {
     val query = db.run(dbbikes += bike.id)
+    val queryy = (for (bike <- dbbikes) yield bike.id).result
+    val q = db.run(queryy)
+    var i = 0
+    Await.result(q, 5.seconds).foreach((_:Int) => i+=1)
+    println(i)
   }
 
 }

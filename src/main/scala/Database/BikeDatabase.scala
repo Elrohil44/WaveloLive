@@ -4,8 +4,9 @@ import com.typesafe.config.ConfigFactory
 import slick.jdbc.PostgresProfile.api._
 import slick.jdbc.meta.MTable
 
+import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 
 /**
@@ -35,7 +36,12 @@ object BikeDatabase {
   }
 
   def insertBike(bike: Bikes.Bike) = {
-    db.run(dbbikes += bike.id)
+    val query = db.run(dbbikes += bike.id)
+    try {
+      Await.result(query, 500.microseconds)
+    } catch {
+      case _:Exception => println("Timeout")
+    }
   }
 
 }

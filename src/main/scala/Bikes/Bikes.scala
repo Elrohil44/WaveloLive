@@ -1,13 +1,16 @@
 package Bikes
 
-import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
+import Bikes.{UpdateAll, Updating}
+import Database.BikeDatabase
+import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
+import akka.stream.ActorMaterializer
 import spray.json._
-import scala.util.Success
-import Bikes.Updating
+
+import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 /**
   * Created by Wiesiek on 2017-05-20.
@@ -19,6 +22,8 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
   import context.dispatcher
 
   val http = Http(system)
+  var allUpdated: Boolean = true
+  private val db = BikeDatabase
 
   def update(): Unit = {
     http.singleRequest(HttpRequest(uri = Bikes.url)).pipeTo(self)
@@ -26,6 +31,9 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
 
   def receive = {
     case Updating => update()
+    case UpdateAll =>
+      allUpdated = false
+      update()
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       val body = Unmarshal(entity).to[String]
         .onComplete({
@@ -35,11 +43,15 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             // I don't know if it is very effective but it works
             // It adds bikes that were rented and haven't been collected by the server since
             // the server started
-
             val available = (for (item <- _list) yield new Bike(item, system, materializer)).toSet
             // Returned bikes are those which were rented and now are available
-
-            bikes.returned = bikes.rented & available
+            if(!allUpdated){
+              bikes.bikes = (bikes.bikes -- available) ++ available
+              bikes.returned = Set()
+              allUpdated = true
+            }
+            else
+              bikes.returned = bikes.rented & available
 
             // Rented are those which are not available
 
@@ -47,8 +59,10 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             // The coordinates of rented and returned should be updated
 
             val toUpdate: Set[Bike] = bikes.rented ++ bikes.returned
+            val toStore: Set[Bike] = available -- bikes.bikes
 
             toUpdate.map((b:Bike) => {b.updateCoords(); b})
+            toStore.map((b: Bike) => db.insertBike(b))
             // Bikes are all bikes that have been collected since the server started
 
             bikes.bikes = bikes.bikes ++ available
@@ -62,18 +76,33 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
   }
 }
 
-class Bikes(implicit val system: ActorSystem,implicit val materializer: ActorMaterializer){
-  var bikes: Set[Bike] = Set()
-  var returned: Set[Bike] = Set()
-  var rented: Set[Bike] = Set()
+class Bikes(val system: ActorSystem,val materializer: ActorMaterializer, var bikes: Set[Bike] = Set(),
+            var returned: Set[Bike] = Set(), var rented: Set[Bike] = Set()){
+
+  def this(system: ActorSystem, materializer: ActorMaterializer, ids: Future[Seq[Int]]){
+    this(system, materializer)
+    import scala.concurrent.ExecutionContext.Implicits.global
+    ids.onComplete({
+      case Success(bikeIDs) => bikes =  bikes ++ bikeIDs.map((id: Int) => new Bike(id, system, materializer))
+      case Failure(_) => println("Cannot get bikes from database")
+    })
+  }
+
+
   private val updator = system.actorOf(Props(classOf[BikesUpdator], this, system, materializer), "bikes")
+
 
   def update(): Unit = {
     updator ! Updating
+  }
+
+  def updateAll(): Unit = {
+    updator ! UpdateAll
   }
 }
 
 object Bikes {
   case object Updating
+  case object UpdateAll
   val url: String = "https://app.socialbicycles.com/api/bikes.json?network_id=105&per_page=10000"
 }

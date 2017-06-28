@@ -1,16 +1,16 @@
 package Bikes
 
-import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
+import Bikes.Updating
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.stream.{ActorMaterializer, ActorMaterializerSettings, BufferOverflowException}
+import akka.stream.ActorMaterializer
 import spray.json._
-import Bikes.Updating
 
-import scala.util.Success
 import scala.concurrent.duration._
+import scala.util.Success
 
 /**
   * Created by Wiesiek on 2017-05-20.
@@ -44,7 +44,7 @@ trait BikeJsonProtocol extends DefaultJsonProtocol {
       case JsObject(x) =>
         (x("id"), x("latitude"), x("longitude")) match{
         case (JsNumber(id), JsNumber(latitude), JsNumber(longitude)) =>
-            new Bike(id.toInt, latitude.toDouble, longitude.toDouble, null, null)
+            new Bike(id.toInt, null, null, latitude.toDouble, longitude.toDouble)
         case _ => deserializationError("Bike expected")
     }
       case _ => deserializationError("Bike expected")
@@ -95,13 +95,14 @@ class BikeUpdator(val biike: Bike, implicit val system: ActorSystem,
 
 }
 
-class Bike(val id: Int, var latitude: Double = 0.0,
-           var longitude: Double = 0.0,implicit val system: ActorSystem,
-           implicit val materializer: ActorMaterializer){
+class Bike(val id: Int, implicit val system: ActorSystem,
+           implicit val materializer: ActorMaterializer,
+           var latitude: Double = 0.0, var longitude: Double = 0.0){
 
   def this(bike: BikeJSON, system: ActorSystem, materializer: ActorMaterializer){
-    this(bike.id, bike.current_position.coords(1), bike.current_position.coords(0), system, materializer)
+    this(bike.id, system, materializer, bike.current_position.coords(1), bike.current_position.coords(0))
   }
+
   var updated: Boolean = false
   private var withActor: Boolean = false
   private var updator: ActorRef = _

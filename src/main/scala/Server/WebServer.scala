@@ -1,8 +1,10 @@
+package Server
+
 import Bikes.{Bikes, BikesJSON, JsonSupport}
+import Database.BikeDatabase
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.event.Logging
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
@@ -13,6 +15,9 @@ import com.typesafe.config.ConfigFactory
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
+/**
+  * Created by Wiesiek on 2017-06-28.
+  */
 object WebServer extends JsonSupport with App{
 
   // Case objects defined to identify requests for actors
@@ -20,7 +25,6 @@ object WebServer extends JsonSupport with App{
   case object GetBikes
   case object GetToUpdate
   case object Update
-  case object Ping
 
   // bikes stores information about all bikes collected by server
 
@@ -29,8 +33,9 @@ object WebServer extends JsonSupport with App{
 
   val config = ConfigFactory.load()
   val logger = Logging(system, getClass)
+  private val db = BikeDatabase
 
-  val bikes = new Bikes()
+  private val bikes = new Bikes(system, materializer, db.getBikes)
   // Actor Updater is responsible for updating information about bikes
 
   class Updater extends Actor with ActorLogging {
@@ -44,24 +49,14 @@ object WebServer extends JsonSupport with App{
 
   class Retriever extends
     Actor with ActorLogging {
-    import akka.pattern.pipe
-    import context.dispatcher
-    val http = Http(system)
-    val ping = HttpRequest(uri = "http://" + config.getString("http.interface") +":"+ config.getString("http.port") + "/ping")
-
     def receive = {
-      case Ping => http.singleRequest(ping).pipeTo(self)
       case GetToUpdate => sender() ! BikesJSON((bikes.rented ++ bikes.returned).toArray)
       case GetBikes => sender() ! BikesJSON(bikes.bikes.toArray)
-      case resp @ HttpResponse(_, _, _, _) =>
-        resp.discardEntityBytes()
       case _ => log.info("Invalid message")
       }
   }
 
-
- // def main(args: Array[String]) {
-    // needed for the future flatMap/onComplete in the end
+  // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher
 
   // Initialising actors
@@ -70,9 +65,8 @@ object WebServer extends JsonSupport with App{
 
   // Schedule update interval to 30 seconds
   // Scheduler sends Update request to actor updater every 30 seconds
-
-  system.scheduler.schedule(0.seconds, 10.seconds, updater, Update)
-  system.scheduler.schedule(5.minutes, 10.minutes, retriever, Ping)
+  system.scheduler.scheduleOnce(10.seconds,() => {bikes.updateAll()})
+  system.scheduler.schedule(20.seconds, 10.seconds, updater, Update)
 
   // Defining timeout (following the example xD)
 
@@ -97,13 +91,6 @@ object WebServer extends JsonSupport with App{
           // As said before
           complete(bikesJSON)
         }
-      }~
-      path("ping") {
-        get {
-
-          // As said before
-          complete("PONG!")
-        }
       }
   }
 
@@ -111,11 +98,4 @@ object WebServer extends JsonSupport with App{
     // Setting server address and port
 
   val bindingFuture = Http().bindAndHandle(route, config.getString("http.interface"), config.getInt("http.port"))
-//    println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
-//    StdIn.readLine() // let it run until user presses return
-//    bindingFuture
-//      .flatMap(_.unbind()) // trigger unbinding from the port
-//      .onComplete(_ => system.terminate()) // and shutdown when done
-
- // }
 }

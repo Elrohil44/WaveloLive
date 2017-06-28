@@ -62,7 +62,7 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             val toUpdate: Set[Bike] = bikes.rented ++ bikes.returned
 
             toUpdate.map((b:Bike) => {b.updateCoords(); b})
-            toStore.map((b: Bike) => db.insertBike(b))
+//            toStore.map((b: Bike) => db.insertBike(b))
             // Bikes are all bikes that have been collected since the server started
 
             bikes.bikes = bikes.bikes ++ available

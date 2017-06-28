@@ -37,11 +37,6 @@ object BikeDatabase {
 
   def insertBike(bike: Bikes.Bike) = {
     val query = db.run(dbbikes += bike.id)
-    val queryy = (for (bike <- dbbikes) yield bike.id).result
-    val q = db.run(queryy)
-    var i = 0
-    Await.result(q, 5.seconds).foreach((_:Int) => i+=1)
-    println(i)
   }
 
 }

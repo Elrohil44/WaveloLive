@@ -1,6 +1,6 @@
 package Bikes
 
-import Bikes.Bikes.{UpdateAll, Updating}
+import Bikes.{UpdateAll, Updating}
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}

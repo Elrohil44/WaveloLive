@@ -1,6 +1,7 @@
 package Bikes
 
 import Bikes.{UpdateAll, Updating}
+import Database.BikeDatabase
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
@@ -22,7 +23,7 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
 
   val http = Http(system)
   var allUpdated: Boolean = true
-//  private val db = BikeDatabase
+  private val db = BikeDatabase
 
   def update(): Unit = {
     http.singleRequest(HttpRequest(uri = Bikes.url)).pipeTo(self)
@@ -61,7 +62,7 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             val toUpdate: Set[Bike] = bikes.rented ++ bikes.returned
 
             toUpdate.map((b:Bike) => {b.updateCoords(); b})
-//            toStore.map((b: Bike) => db.insertBike(b))
+            toStore.map((b: Bike) => db.insertBike(b))
             // Bikes are all bikes that have been collected since the server started
 
             bikes.bikes = bikes.bikes ++ available

@@ -4,9 +4,8 @@ import com.typesafe.config.ConfigFactory
 import slick.jdbc.PostgresProfile.api._
 import slick.jdbc.meta.MTable
 
-import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 /**

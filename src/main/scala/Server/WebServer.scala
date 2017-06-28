@@ -65,7 +65,7 @@ object WebServer extends JsonSupport with App{
 
   // Schedule update interval to 30 seconds
   // Scheduler sends Update request to actor updater every 30 seconds
-  system.scheduler.scheduleOnce(0.seconds,() => {bikes.updateAll()})
+  system.scheduler.schedule(1.seconds, 30.minutes, () => {bikes.updateAll()})
   system.scheduler.schedule(10.seconds, 10.seconds, updater, Update)
 
   // Defining timeout (following the example xD)

@@ -1,7 +1,6 @@
 package Bikes
 
-import Bikes.{UpdateAll, Updating}
-import Database.BikeDatabase
+import Bikes.Bikes.{UpdateAll, Updating}
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
@@ -23,7 +22,7 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
 
   val http = Http(system)
   var allUpdated: Boolean = true
-  private val db = BikeDatabase
+//  private val db = BikeDatabase
 
   def update(): Unit = {
     http.singleRequest(HttpRequest(uri = Bikes.url)).pipeTo(self)

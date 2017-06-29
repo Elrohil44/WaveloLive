@@ -5,8 +5,7 @@ import slick.jdbc.PostgresProfile.api._
 import slick.jdbc.meta.MTable
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
+import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 /**
@@ -19,7 +18,6 @@ object BikeDatabase {
   }
 
   val dbbikes = TableQuery[Bike]
-  val config = ConfigFactory.load()
   val db = Database.forConfig("databaseUrl")
 
   db.run(MTable.getTables("BIKES")).onComplete({

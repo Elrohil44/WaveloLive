@@ -82,7 +82,9 @@ class Bikes(val system: ActorSystem,val materializer: ActorMaterializer, var bik
     this(system, materializer)
     import scala.concurrent.ExecutionContext.Implicits.global
     ids.onComplete({
-      case Success(bikeIDs) => bikes =  bikes ++ bikeIDs.map(id => new Bike(id, system, materializer))
+      case Success(bikeIDs) =>
+        bikes =  bikes ++ bikeIDs.map(id => new Bike(id, system, materializer))
+        updateAll()
       case Failure(_) => println("Cannot get bikes from database")
     })
   }

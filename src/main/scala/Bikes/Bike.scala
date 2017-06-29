@@ -123,6 +123,10 @@ class Bike(val id: Int, implicit val system: ActorSystem,
     this.longitude = longitude
   }
 
+  def setCoords(other: Bike): Unit = {
+    setCoords(other.latitude, other.longitude)
+  }
+
   def printCoords(): Unit = {
     println("Bike" +" "+id+" " + latitude + " " + longitude)
   }

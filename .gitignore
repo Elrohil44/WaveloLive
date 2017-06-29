@@ -5,7 +5,7 @@
 ### SBT template
 # Simple Build Tool
 # http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
-
+.ENV
 dist/*
 target/
 lib_managed/
@@ -21,25 +21,6 @@ project/plugins/project/
 
 # User-specific stuff:
 .idea
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
-
-# Sensitive or high-churn files:
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.xml
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-
-# Gradle:
-.idea/**/gradle.xml
-.idea/**/libraries
-
-# Mongo Explorer plugin:
-.idea/**/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -60,13 +41,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-
-.idea/.name
-.idea/misc.xml
-.idea/modules.xml
-.idea/modules/
-.idea/sbt.xml
-.idea/scala_compiler.xml
 project/project/
 src/main/java/
 src/main/scala-2.12/

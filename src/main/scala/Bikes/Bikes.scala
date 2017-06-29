@@ -45,27 +45,26 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             // the server started
             val available = (for (item <- _list) yield new Bike(item, system, materializer)).toSet
             // Returned bikes are those which were rented and now are available
-            val toStore: Set[Bike] = available -- bikes.bikes
+            val toStore: Set[Bike] = available &~ bikes.bikes
             if(!allUpdated){
-              bikes.bikes = (bikes.bikes -- available) ++ available
-              bikes.returned = Set()
+              val updatable = (available & bikes.bikes).view.map(b => b.id -> b).toMap
+              (bikes.bikes & available).foreach(b => b.setCoords(updatable(b.id)))
               allUpdated = true
             }
 
             bikes.returned = bikes.rented & available
 
             // Rented are those which are not available
-
-            bikes.rented = bikes.bikes -- available
+            bikes.rented = bikes.bikes &~ available
             // The coordinates of rented and returned should be updated
 
-            val toUpdate: Set[Bike] = bikes.rented ++ bikes.returned
+            val toUpdate: Set[Bike] = bikes.rented | bikes.returned
 
-            toUpdate.map((b:Bike) => {b.updateCoords(); b})
+            toUpdate.map(b => {b.updateCoords(); b})
             toStore.foreach(db.insertBike)
             // Bikes are all bikes that have been collected since the server started
 
-            bikes.bikes = bikes.bikes ++ available
+            bikes.bikes = bikes.bikes | available
           case _ =>
             println("Problem")
         })
@@ -83,7 +82,7 @@ class Bikes(val system: ActorSystem,val materializer: ActorMaterializer, var bik
     this(system, materializer)
     import scala.concurrent.ExecutionContext.Implicits.global
     ids.onComplete({
-      case Success(bikeIDs) => bikes =  bikes ++ bikeIDs.map((id: Int) => new Bike(id, system, materializer))
+      case Success(bikeIDs) => bikes =  bikes ++ bikeIDs.map(id => new Bike(id, system, materializer))
       case Failure(_) => println("Cannot get bikes from database")
     })
   }

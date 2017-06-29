@@ -35,7 +35,7 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
       allUpdated = false
       update()
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
-      val body = Unmarshal(entity).to[String]
+      Unmarshal(entity).to[String]
         .onComplete({
           case Success(json) =>
             val _list = json.parseJson.convertTo[BikeList].items
@@ -45,10 +45,21 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             // the server started
             val available = (for (item <- _list) yield new Bike(item, system, materializer)).toSet
             // Returned bikes are those which were rented and now are available
-            val toStore: Set[Bike] = available &~ bikes.bikes
+            (available &~ bikes.bikes).foreach(db.insertBike)
             if(!allUpdated){
-              val updatable = (available & bikes.bikes).view.map(b => b.id -> b).toMap
-              (bikes.bikes & available).foreach(b => b.setCoords(updatable(b.id)))
+              println("Updating all!")
+              val updatable = available.filter(bikes.bikes.contains).view.map(b => b.id -> b).toMap
+              var counter = 0
+              bikes.bikes.filter(available.contains).foreach(b => {
+                if(b.latitude < 1){
+                  println(s"${b.id} ${b.latitude} ${b.longitude}")
+                  println(s"${updatable(b.id).id} ${updatable(b.id).latitude} ${updatable(b.id).longitude}")
+                }
+                b.setCoords(updatable(b.id))
+                counter += 1
+              })
+              println(updatable.size)
+              println(counter)
               allUpdated = true
             }
 
@@ -58,10 +69,8 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             bikes.rented = bikes.bikes &~ available
             // The coordinates of rented and returned should be updated
 
-            val toUpdate: Set[Bike] = bikes.rented | bikes.returned
+            (bikes.rented | bikes.returned).foreach(_.updateCoords())
 
-            toUpdate.map(b => {b.updateCoords(); b})
-            toStore.foreach(db.insertBike)
             // Bikes are all bikes that have been collected since the server started
 
             bikes.bikes = bikes.bikes | available

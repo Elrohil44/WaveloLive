@@ -90,7 +90,7 @@ class BikeUpdator(val biike: Bike, implicit val system: ActorSystem,
     case resp @ HttpResponse(code, _, _, _) =>
       println("Error")
       resp.discardEntityBytes()
-    case _ => system.scheduler.scheduleOnce(1.seconds, self, Updating)
+    case _ => system.scheduler.scheduleOnce(500.milliseconds, self, Updating)
   }
 
 }

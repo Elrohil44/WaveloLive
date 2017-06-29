@@ -19,6 +19,7 @@ object BikeDatabase {
 
   val dbbikes = TableQuery[Bike]
   val db = Database.forConfig("databaseUrl")
+  db.createSession()
 
   db.run(MTable.getTables("BIKES")).onComplete({
     case Success(res) =>
@@ -34,7 +35,7 @@ object BikeDatabase {
   }
 
   def insertBike(bike: Bikes.Bike) = {
-    val query = db.run(dbbikes += bike.id)
+    db.run(dbbikes += bike.id)
   }
 
 }

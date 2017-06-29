@@ -74,16 +74,19 @@ class BikeUpdator(val biike: Bike, implicit val system: ActorSystem,
     http.singleRequest(HttpRequest(uri = Bike.url + biike.id.toString)).pipeTo(self)
   }
 
+  def doUpdate(json: String): Unit = {
+    val bike = json.parseJson.convertTo[BikeJSON]
+    biike.latitude = bike.current_position.coords(1)
+    biike.longitude = bike.current_position.coords(0)
+  }
+
   def receive = {
     case Updating => update()
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
-      val body = Unmarshal(entity).to[String]
+      Unmarshal(entity).to[String]
         .onComplete({
           case Success(json) =>
-            val bike = json.parseJson.convertTo[BikeJSON]
-            biike.latitude = bike.current_position.coords(1)
-            biike.longitude = bike.current_position.coords(0)
-            biike.updated = true
+            doUpdate(json)
           case _ =>
             println("Problem")
         })
@@ -103,7 +106,6 @@ class Bike(val id: Int, implicit val system: ActorSystem,
     this(bike.id, system, materializer, bike.current_position.coords(1), bike.current_position.coords(0))
   }
 
-  var updated: Boolean = false
   private var withActor: Boolean = false
   private var updator: ActorRef = _
 

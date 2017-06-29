@@ -23,10 +23,39 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
 
   val http = Http(system)
   var allUpdated: Boolean = true
-  private val db = BikeDatabase
+  private lazy val db = BikeDatabase
 
   def update(): Unit = {
     http.singleRequest(HttpRequest(uri = Bikes.url)).pipeTo(self)
+  }
+
+  def doUpdate(json: String): Unit ={
+    val _list = json.parseJson.convertTo[BikeList].items
+
+    // I don't know if it is very effective but it works
+    // It adds bikes that were rented and haven't been collected by the server since
+    // the server started
+    val available = (for (item <- _list) yield new Bike(item, system, materializer)).toSet
+
+    // Returned bikes are those which were rented and now are available
+    if(bikes.withDB) (available &~ bikes.bikes).foreach(db.insertBike)
+    if(!allUpdated){
+      val updatable = available.filter(bikes.bikes.contains).view.map(b => b.id -> b).toMap
+      bikes.bikes.filter(available.contains).foreach(b => b.setCoords(updatable(b.id)))
+      allUpdated = true
+    }
+
+    bikes.returned = bikes.rented & available
+
+    // Rented are those which are not available
+    bikes.rented = bikes.bikes &~ available
+    // The coordinates of rented and returned should be updated
+
+    (bikes.rented | bikes.returned).foreach(_.updateCoords())
+
+    // Bikes are all bikes that have been collected since the server started
+
+    bikes.bikes = bikes.bikes | available
   }
 
   def receive = {
@@ -38,31 +67,7 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
       Unmarshal(entity).to[String]
         .onComplete({
           case Success(json) =>
-            val _list = json.parseJson.convertTo[BikeList].items
-
-            // I don't know if it is very effective but it works
-            // It adds bikes that were rented and haven't been collected by the server since
-            // the server started
-            val available = (for (item <- _list) yield new Bike(item, system, materializer)).toSet
-            // Returned bikes are those which were rented and now are available
-            (available &~ bikes.bikes).foreach(db.insertBike)
-            if(!allUpdated){
-              val updatable = available.filter(bikes.bikes.contains).view.map(b => b.id -> b).toMap
-              bikes.bikes.filter(available.contains).foreach(b => b.setCoords(updatable(b.id)))
-              allUpdated = true
-            }
-
-            bikes.returned = bikes.rented & available
-
-            // Rented are those which are not available
-            bikes.rented = bikes.bikes &~ available
-            // The coordinates of rented and returned should be updated
-
-            (bikes.rented | bikes.returned).foreach(_.updateCoords())
-
-            // Bikes are all bikes that have been collected since the server started
-
-            bikes.bikes = bikes.bikes | available
+            doUpdate(json)
           case _ =>
             println("Problem")
         })
@@ -74,7 +79,7 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
 }
 
 class Bikes(val system: ActorSystem,val materializer: ActorMaterializer, var bikes: Set[Bike] = Set(),
-            var returned: Set[Bike] = Set(), var rented: Set[Bike] = Set()){
+            var returned: Set[Bike] = Set(), var rented: Set[Bike] = Set(), val withDB: Boolean = true){
 
   def this(system: ActorSystem, materializer: ActorMaterializer, ids: Future[Seq[Int]]){
     this(system, materializer)

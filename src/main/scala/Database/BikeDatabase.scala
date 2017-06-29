@@ -1,6 +1,5 @@
 package Database
 
-import com.typesafe.config.ConfigFactory
 import slick.jdbc.PostgresProfile.api._
 import slick.jdbc.meta.MTable
 

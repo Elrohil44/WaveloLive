@@ -24,6 +24,8 @@ object WebServer extends JsonSupport with App{
 
   case object GetBikes
   case object GetToUpdate
+  case object GetRented
+  case object GetAvailable
   case object Update
 
   // bikes stores information about all bikes collected by server
@@ -52,6 +54,8 @@ object WebServer extends JsonSupport with App{
     def receive = {
       case GetToUpdate => sender() ! BikesJSON((bikes.rented | bikes.returned).toArray)
       case GetBikes => sender() ! BikesJSON(bikes.bikes.toArray)
+      case GetAvailable => sender() ! BikesJSON((bikes.bikes &~ bikes.rented).toArray)
+      case GetRented => sender() ! BikesJSON(bikes.rented.toArray)
       case _ => log.info("Invalid message")
       }
   }
@@ -84,14 +88,30 @@ object WebServer extends JsonSupport with App{
         complete(bikesJSON)
       }
     } ~
-      path("toupdate") {
-        get {
-          val bikesJSON: Future[BikesJSON] = (retriever ? GetToUpdate).mapTo[BikesJSON]
+    path("toupdate") {
+      get {
+        val bikesJSON: Future[BikesJSON] = (retriever ? GetToUpdate).mapTo[BikesJSON]
 
-          // As said before
-          complete(bikesJSON)
-        }
+        // As said before
+        complete(bikesJSON)
       }
+    } ~
+    path("rented") {
+      get {
+        val bikesJSON: Future[BikesJSON] = (retriever ? GetRented).mapTo[BikesJSON]
+
+        // As said before
+        complete(bikesJSON)
+      }
+    } ~
+    path("available") {
+      get {
+        val bikesJSON: Future[BikesJSON] = (retriever ? GetAvailable).mapTo[BikesJSON]
+
+        // As said before
+        complete(bikesJSON)
+      }
+    }
   }
 
 

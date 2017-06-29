@@ -47,19 +47,8 @@ class BikesUpdator(val bikes: Bikes, implicit val system: ActorSystem, implicit 
             // Returned bikes are those which were rented and now are available
             (available &~ bikes.bikes).foreach(db.insertBike)
             if(!allUpdated){
-              println("Updating all!")
               val updatable = available.filter(bikes.bikes.contains).view.map(b => b.id -> b).toMap
-              var counter = 0
-              bikes.bikes.filter(available.contains).foreach(b => {
-                if(b.latitude < 1){
-                  println(s"${b.id} ${b.latitude} ${b.longitude}")
-                  println(s"${updatable(b.id).id} ${updatable(b.id).latitude} ${updatable(b.id).longitude}")
-                }
-                b.setCoords(updatable(b.id))
-                counter += 1
-              })
-              println(updatable.size)
-              println(counter)
+              bikes.bikes.filter(available.contains).foreach(b => b.setCoords(updatable(b.id)))
               allUpdated = true
             }
 
